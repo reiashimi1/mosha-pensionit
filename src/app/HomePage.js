@@ -117,7 +117,7 @@ const HomePage = () => {
                 <Card className="mt-20 p-5">
                     <div className="flex justify-center text-blue-700 font-semibold">Rezultati</div>
                     <CardContent>
-                        <div>Del ne pension ne {finalRetirementDate}</div>
+                        <div>Del ne pension ne {moment(finalRetirementDate, 'YYYY-MM-DD').format('DD MMMM YYYY')}</div>
                         <div>Mosha e daljes ne pension: {ageOfRetirement}</div>
                         <div>Eksperienca e punes: {calculateWorkExperience}</div>
                     </CardContent>

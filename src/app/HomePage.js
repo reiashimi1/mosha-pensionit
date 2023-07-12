@@ -28,7 +28,7 @@ const HomePage = () => {
     }
 
     const calculateRetirementYear = (baseYears, baseMonths, isMale = false) => {
-        if ((isMale && moment(birthday).get('year') <= 1967) || (!isMale && moment(birthday).get('year') <= 1955)) {
+        if ((isMale && moment(birthday).get('year') <= 1967) || (!isMale && (moment(birthday).get('year') <= 1954 && moment(birthday).get('months') <= 9))) {
             const retirementDate = moment(birthday).add(baseYears, 'year').add(baseMonths, 'months').format('YYYY-MM-DD');
             setFinalRetirementDate(retirementDate);
             return;
@@ -38,17 +38,21 @@ const HomePage = () => {
             if (monthsToAdd > 24) {
                 const retirementDate = moment(birthday).add(67, 'years').format('YYYY-MM-DD');
                 setFinalRetirementDate(retirementDate);
+            } else if (monthsToAdd + moment(birthday).get('month')  >= 12) {
+                const retirementDate = moment(birthday).add(baseYears, 'years').add(monthsToAdd + 1, 'months').format('YYYY-MM-DD');
+                setFinalRetirementDate(retirementDate);
             } else {
                 const retirementDate = moment(birthday).add(baseYears, 'years').add(monthsToAdd, 'months').format('YYYY-MM-DD');
                 setFinalRetirementDate(retirementDate);
             }
         } else {
-            const monthsToAdd = (moment(birthday).get('year') - 1955) * 2;
+            const monthsToAdd = (moment(birthday).get('year') - 1954) * 2;
             if (monthsToAdd > 82) {
                 const retirementDate = moment(birthday).add(67, 'year').format('YYYY-MM-DD');
                 setFinalRetirementDate(retirementDate);
             } else {
-                const retirementDate = moment(birthday).add(baseYears, 'years').add(monthsToAdd, 'months').format('YYYY-MM-DD');
+                const extraMonths = (monthsToAdd / 12).toFixed(0) * 2;
+                const retirementDate = moment(birthday).add(baseYears, 'years').add(monthsToAdd + extraMonths, 'months').format('YYYY-MM-DD');
                 setFinalRetirementDate(retirementDate);
             }
         }
@@ -80,10 +84,9 @@ const HomePage = () => {
         baseYears += monthsToAdd / 12;
         baseMonths += monthsToAdd % 12;
         if (baseMonths === 12) {
-            baseYears += 1
             baseMonths = 0
         }
-        if(baseYears >= 40) {
+        if (baseYears >= 40) {
             return '40 vite';
         }
         return baseYears.toFixed(0) + ' vite e ' + baseMonths + ' muaj';
